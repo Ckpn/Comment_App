@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Comment APP</title>
+{% endblock title %}
+
+
+
+
+
+
+{% block content %}
+
+<div class="main-con1">
+    <h1 style="padding-left: 100px;">Comment App</h1>
+    <div class="container">
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <label for="">{{form.full_name.label}}</label>
+                    {{form.full_name}}
+                </div>
+                <div class="col-3">
+                    <label for=""> {{form.email.label}} </label>
+                    {{form.email}}
+                </div>
+                <div class="col-12">
+                    {{form.text}}
+                    {{form.media}}
+                </div>
+                <div class="col-3">
+                    <input type="submit" class="btn btn-outline-dark">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for y in yorum %}
+            <div class="col-6">
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="hid1 d-flex justify-content-between">
+                            <h4 class="card-title"> {{y.full_name}} </h4>
+                            <p class="card-text"> <strong>Email</strong> {{y.email}} </p>
+                        </div>
+                        <div class="hid2 d-flex justify-content-between">
+                            <p class="card-text"> {{y.text | safe}} </p>
+                            <p class="card-text"> <span class="text-muted">Tarih</span> {{y.date}}</p>
+
+
+                            {% if y.user == request.user %}
+                            <form method="POST" action=" {% url 'sil' %} ">
+                                {% csrf_token %}
+                                <input type="text" value="{{y.id}}" name="silValue" id="" hidden>
+                                <input type="submit" value="sil" class="btn btn-danger ">
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+
+
+
+
+{% endblock content %}
